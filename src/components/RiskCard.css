@@ -1,0 +1,120 @@
+.risk-block {
+    padding: var(--space-lg);
+    animation: fadeInUp 0.4s ease;
+}
+
+.risk-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+.risk-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.risk-high .risk-icon {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.risk-medium .risk-icon {
+    background: var(--warning-bg);
+    color: var(--warning);
+}
+
+.risk-low .risk-icon {
+    background: var(--info-bg);
+    color: var(--info);
+}
+
+.risk-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.risk-level-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.risk-high .risk-level-label {
+    color: var(--danger);
+}
+
+.risk-medium .risk-level-label {
+    color: var(--warning);
+}
+
+.risk-low .risk-level-label {
+    color: var(--info);
+}
+
+.risk-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-1);
+}
+
+.risk-description {
+    color: var(--text-2);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: var(--space-md);
+}
+
+.risk-reason,
+.risk-fix {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-sm);
+    font-size: 0.85rem;
+}
+
+.risk-reason {
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 3px solid var(--warning);
+}
+
+.risk-fix {
+    background: rgba(16, 185, 129, 0.1);
+    border-left: 3px solid var(--success);
+}
+
+.risk-reason strong,
+.risk-fix strong {
+    display: block;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    color: var(--text-1);
+}
+
+.risk-reason p,
+.risk-fix p {
+    color: var(--text-2);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Border accents */
+.risk-high {
+    border-left: 3px solid var(--danger);
+}
+
+.risk-medium {
+    border-left: 3px solid var(--warning);
+}
+
+.risk-low {
+    border-left: 3px solid var(--info);
+}

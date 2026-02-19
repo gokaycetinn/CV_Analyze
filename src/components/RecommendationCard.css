@@ -1,0 +1,113 @@
+.recommendation-block {
+    padding: var(--space-lg);
+    animation: fadeInUp 0.4s ease;
+}
+
+.rec-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+.rec-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface-3);
+    border-radius: var(--radius-md);
+}
+
+.rec-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rec-priority {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.rec-high .rec-priority {
+    color: var(--danger);
+}
+
+.rec-medium .rec-priority {
+    color: var(--warning);
+}
+
+.rec-low .rec-priority {
+    color: var(--info);
+}
+
+.rec-title-group h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-1);
+}
+
+.rec-description {
+    color: var(--text-2);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: var(--space-md);
+}
+
+.rec-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.rec-items li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    color: var(--text-1);
+    line-height: 1.4;
+}
+
+.rec-items li svg {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--accent);
+}
+
+.rec-action {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    font-size: 0.85rem;
+    color: var(--accent-light);
+    line-height: 1.5;
+}
+
+/* Priority borders */
+.rec-high {
+    border-left: 3px solid var(--danger);
+}
+
+.rec-medium {
+    border-left: 3px solid var(--warning);
+}
+
+.rec-low {
+    border-left: 3px solid var(--accent);
+}
