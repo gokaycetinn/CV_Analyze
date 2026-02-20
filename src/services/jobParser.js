@@ -93,12 +93,13 @@ function detectJobSectionHeader(line) {
  */
 export function extractSkillsFromJob(text) {
     const allSkills = getAllSkills();
-    const normalizedText = turkishLowerCase(text);
+    const normalizedText = normalizeForSkillMatch(text);
     const foundSkills = new Set();
 
     for (const skill of allSkills) {
-        const skillLower = skill.toLowerCase();
-        const regex = new RegExp(`(?:^|[\\s,;:()\\[\\]{}/"'\\-–—•●|])${escapeRegex(skillLower)}(?:$|[\\s,;:()\\[\\]{}/"'\\-–—•●|.])`, 'i');
+        const skillLower = normalizeForSkillMatch(skill);
+        const skillPattern = escapeRegex(skillLower).replace(/\s+/g, '\\s+');
+        const regex = new RegExp(`(?:^|[\\s,;:()\\[\\]{}/"'\\-–—•●|])${skillPattern}(?:$|[\\s,;:()\\[\\]{}/"'\\-–—•●|.])`, 'i');
         if (regex.test(normalizedText)) {
             const syn = findSynonym(skillLower);
             foundSkills.add(syn ? syn.canonical : skillLower);
@@ -115,12 +116,19 @@ function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+function normalizeForSkillMatch(text) {
+    return turkishLowerCase(text || '')
+        .replace(/ı/g, 'i')
+        .replace(/[^\S\n]+/g, ' ')
+        .trim();
+}
+
 /**
  * İlan tam analizi
  */
 export function analyzeJob(text) {
     const sections = parseJobSections(text);
-    const allSkills = extractSkillsFromJob(text);
+    const allSkills = pruneOverlappingSkills(extractSkillsFromJob(text));
     const seniority = detectSeniority(text);
 
     // Nice-to-have becerilerini ayır
@@ -128,7 +136,7 @@ export function analyzeJob(text) {
     let niceToHaveSkills = [];
 
     if (sections.niceToHave) {
-        const niceSkills = extractSkillsFromJob(sections.niceToHave);
+        const niceSkills = pruneOverlappingSkills(extractSkillsFromJob(sections.niceToHave));
         const niceSkillNames = new Set(niceSkills.map(s => s.name));
 
         niceToHaveSkills = niceSkills;
@@ -147,6 +155,16 @@ export function analyzeJob(text) {
         role,
         rawText: text,
     };
+}
+
+function pruneOverlappingSkills(skills) {
+    const names = new Set(skills.map(s => s.name));
+    const hasSpecificApi = names.has('rest api') || names.has('graphql') || names.has('grpc') || names.has('websocket');
+
+    return skills.filter(skill => {
+        if (skill.name === 'api' && hasSpecificApi) return false;
+        return true;
+    });
 }
 
 /**

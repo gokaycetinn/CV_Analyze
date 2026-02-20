@@ -5,10 +5,18 @@
  */
 export function generateRecommendations(cvAnalysis, jobAnalysis, matchResults, atsScore, jobMatchScore) {
     const recommendations = [];
+    const safeMatchResults = matchResults || {
+        missing: [],
+        synonymMatched: [],
+        niceToHave: { missing: [] },
+        seniorityMatch: { match: true, note: '' }
+    };
+    const safeAtsScore = atsScore || { risks: [], breakdown: [] };
+    const isFullAnalysis = !!jobAnalysis && !!matchResults;
 
     // 1. Eksik anahtar kelime önerileri
-    if (matchResults.missing.length > 0) {
-        const missingByCategory = groupByCategory(matchResults.missing);
+    if (safeMatchResults.missing.length > 0) {
+        const missingByCategory = groupByCategory(safeMatchResults.missing);
 
         for (const [category, skills] of Object.entries(missingByCategory)) {
             const skillNames = skills.map(s => s.name);
@@ -26,8 +34,8 @@ export function generateRecommendations(cvAnalysis, jobAnalysis, matchResults, a
     }
 
     // 2. Deneyim maddesi iyileştirme önerileri
-    if (matchResults.missing.length > 0) {
-        const suggestions = generateExperienceSuggestions(matchResults.missing, jobAnalysis);
+    if (safeMatchResults.missing.length > 0 && jobAnalysis) {
+        const suggestions = generateExperienceSuggestions(safeMatchResults.missing, jobAnalysis);
         if (suggestions.length > 0) {
             recommendations.push({
                 id: 'experience_improvement',
@@ -42,9 +50,30 @@ export function generateRecommendations(cvAnalysis, jobAnalysis, matchResults, a
         }
     }
 
+    // 2.1 ATS-only iyileştirme önerileri
+    if (!isFullAnalysis) {
+        const lowAtsSections = (safeAtsScore.breakdown || [])
+            .filter(item => (item.score ?? 0) < (item.maxScore ?? 0))
+            .slice(0, 4)
+            .map(item => `${item.category}: ${item.message}`);
+
+        if (lowAtsSections.length > 0) {
+            recommendations.push({
+                id: 'ats_only_improvements',
+                type: 'content',
+                priority: 'high',
+                icon: '🛠️',
+                title: 'ATS Odaklı İyileştirme Planı',
+                description: 'CV metninizde güçlendirmeniz gereken başlıklar:',
+                items: lowAtsSections,
+                action: 'Bu maddeleri düzenledikten sonra tekrar ATS analizi yaparak skor artışını kontrol edin.'
+            });
+        }
+    }
+
     // 3. ATS format önerileri
-    if (atsScore.risks.length > 0) {
-        const highRisks = atsScore.risks.filter(r => r.level === 'high');
+    if (safeAtsScore.risks.length > 0) {
+        const highRisks = safeAtsScore.risks.filter(r => r.level === 'high');
         if (highRisks.length > 0) {
             recommendations.push({
                 id: 'ats_format',
@@ -60,7 +89,7 @@ export function generateRecommendations(cvAnalysis, jobAnalysis, matchResults, a
     }
 
     // 4. Eşanlamlı eşleşme uyarıları
-    if (matchResults.synonymMatched.length > 0) {
+    if (safeMatchResults.synonymMatched.length > 0) {
         recommendations.push({
             id: 'synonym_warning',
             type: 'keyword',
@@ -68,7 +97,7 @@ export function generateRecommendations(cvAnalysis, jobAnalysis, matchResults, a
             icon: '🔄',
             title: 'Eşanlamlı Kelime Uyarıları',
             description: 'Bu beceriler eşanlamlı formda eşleşti. İlandaki terimi de kullanmayı düşünün:',
-            items: matchResults.synonymMatched.map(s =>
+            items: safeMatchResults.synonymMatched.map(s =>
                 `CV'nizdeki "${s.found}" → İlandaki "${s.required}" olarak da ekleyin`
             ),
             action: 'ATS sistemleri her zaman eşanlamlıları tanımaz. İlandaki kelimeleri birebir kullanmak daha güvenlidir.'
@@ -76,7 +105,7 @@ export function generateRecommendations(cvAnalysis, jobAnalysis, matchResults, a
     }
 
     // 5. Nice-to-have önerileri
-    if (matchResults.niceToHave.missing.length > 0) {
+    if (safeMatchResults.niceToHave.missing.length > 0) {
         recommendations.push({
             id: 'nice_to_have',
             type: 'keyword',
@@ -84,20 +113,20 @@ export function generateRecommendations(cvAnalysis, jobAnalysis, matchResults, a
             icon: '⭐',
             title: 'Bonus Beceriler',
             description: 'Bu beceriler zorunlu değil ama eklerseniz öne çıkarsınız:',
-            items: matchResults.niceToHave.missing.map(s => s.name),
+            items: safeMatchResults.niceToHave.missing.map(s => s.name),
             action: 'Bu becerilerden bildiklerinizi CV\'nize ekleyin.'
         });
     }
 
     // 6. Seniority uyumu önerisi
-    if (!matchResults.seniorityMatch.match) {
+    if (!safeMatchResults.seniorityMatch.match) {
         recommendations.push({
             id: 'seniority',
             type: 'content',
             priority: 'medium',
             icon: '📊',
             title: 'Deneyim Seviyesi Uyumu',
-            description: matchResults.seniorityMatch.note,
+            description: safeMatchResults.seniorityMatch.note,
             items: [
                 'Deneyim maddelerinizde liderlik ve sorumluluk vurgusunu artırın',
                 'Proje yönetimi ve mentörlük deneyimlerinizi öne çıkarın',
@@ -135,6 +164,23 @@ export function generateRecommendations(cvAnalysis, jobAnalysis, matchResults, a
                 generateSummaryExample(jobAnalysis, cvAnalysis)
             ],
             action: 'Bu örneği kendi deneyiminize göre uyarlayın ve CV\'nizin en üstüne ekleyin.'
+        });
+    }
+
+    if (recommendations.length === 0) {
+        recommendations.push({
+            id: 'next_step_review',
+            type: 'content',
+            priority: 'low',
+            icon: '✅',
+            title: 'CV Genel Olarak Uyumlu Görünüyor',
+            description: 'Skorunuzu daha da artırmak için bu adımları deneyin:',
+            items: [
+                'Deneyim maddelerine ölçülebilir sonuçlar ekleyin (%, sayı, zaman kazanımı).',
+                'Başvurduğunuz ilandaki 3 anahtar kelimeyi profil özetine birebir taşıyın.',
+                'Her analiz sonrası metni küçük adımlarla güncelleyip tekrar test edin.'
+            ],
+            action: 'Bu üç adım genelde ATS ve eşleşme skorunda hızlı artış sağlar.'
         });
     }
 
@@ -176,7 +222,7 @@ function generateExperienceSuggestions(missingSkills, jobAnalysis) {
  * Örnek profil özeti oluştur
  */
 function generateSummaryExample(jobAnalysis, cvAnalysis) {
-    const role = jobAnalysis.role;
+    const role = jobAnalysis?.role || 'Software Engineer';
     const topSkills = cvAnalysis.skills.slice(0, 3).map(s => s.name).join(', ');
     const experience = cvAnalysis.dateRanges.length > 0 ? `${cvAnalysis.dateRanges.length}+ yıl deneyimli` : 'Deneyimli';
 

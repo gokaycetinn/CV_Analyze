@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ChevronLeft, ChevronRight, Shield, Target, Lightbulb, Zap, BarChart3, FileCheck } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Lightbulb, Zap, BarChart3, FileCheck } from 'lucide-react';
 import SplitText from '../components/reactbits/SplitText';
 import BlurText from '../components/reactbits/BlurText';
 import CountUp from '../components/reactbits/CountUp';
@@ -58,11 +58,6 @@ export default function HomePage() {
                 <section className="panel panel-hero">
                     <div className="panel-bg-mesh" />
                     <div className="panel-content hero-content">
-                        <div className="hero-badge">
-                            <Zap size={14} />
-                            <span>Türkiye'nin İlk ATS Analiz Platformu</span>
-                        </div>
-
                         <SplitText
                             text="CV'nizi ATS Sistemlerine Hazırlayın"
                             tag="h1"
@@ -93,10 +88,6 @@ export default function HomePage() {
                             </button>
                         </div>
 
-                        <div className="hero-scroll-hint" onClick={() => scrollToPanel(1)}>
-                            <span>Kaydır</span>
-                            <ChevronRight size={16} />
-                        </div>
                     </div>
                 </section>
 
@@ -177,11 +168,7 @@ export default function HomePage() {
                             </AnimatedContent>
                         </div>
 
-                        <div className="features-row">
-                            <div className="feature-chip"><Shield size={16} /> ATS Uyumluluk Kontrolü</div>
-                            <div className="feature-chip"><Target size={16} /> İlan Eşleştirme</div>
-                            <div className="feature-chip"><Lightbulb size={16} /> Akıllı Öneriler</div>
-                        </div>
+
                     </div>
                 </section>
 

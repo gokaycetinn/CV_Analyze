@@ -22,8 +22,11 @@
     gap: 0.4rem;
 }
 
-.footer-icon {
-    color: var(--accent-1);
+.footer-logo {
+    width: 33px;
+    height: 33px;
+    object-fit: contain;
+    display: block;
 }
 
 .footer-name {

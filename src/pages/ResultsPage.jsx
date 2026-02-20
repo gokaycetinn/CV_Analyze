@@ -5,7 +5,7 @@ import CountUp from '../components/reactbits/CountUp';
 import AnimatedContent from '../components/reactbits/AnimatedContent';
 import {
     Shield, Target, TrendingUp, AlertTriangle, CheckCircle2,
-    XCircle, ChevronRight, Download, RotateCcw, Eye,
+    XCircle, ChevronRight, RotateCcw, Eye,
     BarChart3, Lightbulb, ArrowRight, Minus
 } from 'lucide-react';
 import previewThree from '../../img/3.avif';
@@ -28,6 +28,14 @@ const getScoreColor = (score) => {
 };
 
 const toPercent = (value, max) => (max > 0 ? Math.round((value / max) * 100) : 0);
+
+const formatSkillLabel = (skill) => {
+    if (typeof skill === 'string') return skill;
+    if (skill && typeof skill === 'object') {
+        return skill.name || skill.label || '';
+    }
+    return '';
+};
 
 /* ── SVG Circular Progress ───────────────────── */
 function CircularScore({ score, size = 160, strokeWidth = 10, color, label, className = '' }) {
@@ -133,11 +141,11 @@ function DonutChart({ title, matchedCount, missingCount }) {
 
 /* ── Main Component ──────────────────────────── */
 const SECTIONS = [
-    { id: 'overview', label: 'Overview', icon: Eye },
-    { id: 'ats-details', label: 'ATS Details', icon: BarChart3 },
-    { id: 'breakdown', label: 'Score Breakdown', icon: Target },
-    { id: 'risks', label: 'Risks', icon: AlertTriangle },
-    { id: 'recs', label: 'Recommendations', icon: Lightbulb },
+    { id: 'overview', label: 'Genel Bakış', icon: Eye },
+    { id: 'ats-details', label: 'ATS Detayları', icon: BarChart3 },
+    { id: 'breakdown', label: 'Skor Kırılımı', icon: Target },
+    { id: 'risks', label: 'Riskler', icon: AlertTriangle },
+    { id: 'recs', label: 'Öneriler', icon: Lightbulb },
 ];
 
 export default function ResultsPage() {
@@ -230,9 +238,6 @@ export default function ResultsPage() {
                             </div>
                         </div>
                         <div className="results-actions">
-                            <button className="btn btn-secondary btn-sm" onClick={() => window.print()}>
-                                <Download size={16} /> Dışa Aktar
-                            </button>
                             <button className="btn btn-ghost btn-sm" onClick={handleNewAnalysis}>
                                 <RotateCcw size={16} /> Yeni Analiz
                             </button>
@@ -425,7 +430,7 @@ export default function ResultsPage() {
                         {activeSection === 'breakdown' && (
                             <div className="section-block">
                                 <h3 className="section-block-title">
-                                    <Target size={18} className="icon-warning" /> Score Breakdown
+                                    <Target size={18} className="icon-warning" /> Skor Kırılımı
                                 </h3>
                                 <div className="progress-list">
                                     {atsBreakdown.map((item, i) => (
@@ -443,7 +448,7 @@ export default function ResultsPage() {
                                                 <h4 className="section-subtitle-row"><CheckCircle2 size={16} className="icon-success" /> Eşleşen Beceriler ({matched.length})</h4>
                                                 <div className="skills-tags">
                                                     {matched.map((skill, idx) => (
-                                                        <span key={idx} className="tag tag-success"><CheckCircle2 size={12} /> {skill}</span>
+                                                        <span key={`${formatSkillLabel(skill)}-${idx}`} className="tag tag-success"><CheckCircle2 size={12} /> {formatSkillLabel(skill)}</span>
                                                     ))}
                                                 </div>
                                             </div>
@@ -454,7 +459,7 @@ export default function ResultsPage() {
                                                 <h4 className="section-subtitle-row"><XCircle size={16} className="icon-danger" /> Eksik Beceriler ({missing.length})</h4>
                                                 <div className="skills-tags">
                                                     {missing.map((skill, idx) => (
-                                                        <span key={idx} className="tag tag-danger"><XCircle size={12} /> {skill}</span>
+                                                        <span key={`${formatSkillLabel(skill)}-${idx}`} className="tag tag-danger"><XCircle size={12} /> {formatSkillLabel(skill)}</span>
                                                     ))}
                                                 </div>
                                             </div>
@@ -465,7 +470,7 @@ export default function ResultsPage() {
                                                 <h4 className="section-subtitle-row"><CheckCircle2 size={16} className="icon-info" /> Tercih Edilen (Var) ({niceToHaveMatched.length})</h4>
                                                 <div className="skills-tags">
                                                     {niceToHaveMatched.map((skill, idx) => (
-                                                        <span key={idx} className="tag tag-info"><CheckCircle2 size={12} /> {skill}</span>
+                                                        <span key={`${formatSkillLabel(skill)}-${idx}`} className="tag tag-info"><CheckCircle2 size={12} /> {formatSkillLabel(skill)}</span>
                                                     ))}
                                                 </div>
                                             </div>
@@ -476,7 +481,7 @@ export default function ResultsPage() {
                                                 <h4 className="section-subtitle-row"><Minus size={16} className="icon-warning" /> Tercih Edilen (Eksik) ({niceToHaveMissing.length})</h4>
                                                 <div className="skills-tags">
                                                     {niceToHaveMissing.map((skill, idx) => (
-                                                        <span key={idx} className="tag tag-warning"><Minus size={12} /> {skill}</span>
+                                                        <span key={`${formatSkillLabel(skill)}-${idx}`} className="tag tag-warning"><Minus size={12} /> {formatSkillLabel(skill)}</span>
                                                     ))}
                                                 </div>
                                             </div>
@@ -513,7 +518,7 @@ export default function ResultsPage() {
                         {activeSection === 'recs' && (
                             <div className="section-block">
                                 <h3 className="section-block-title">
-                                    <TrendingUp size={18} className="icon-info" /> Recommendations
+                                    <TrendingUp size={18} className="icon-info" /> Öneriler
                                 </h3>
                                 <p className="section-block-desc">CV kalitesini artırmak için önerilen aksiyonlar.</p>
 

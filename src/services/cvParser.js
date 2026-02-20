@@ -184,13 +184,14 @@ function detectSectionHeader(line) {
  */
 export function extractSkillsFromCV(text) {
     const allSkills = getAllSkills();
-    const normalizedText = turkishLowerCase(text);
+    const normalizedText = normalizeForSkillMatch(text);
     const foundSkills = new Set();
 
     for (const skill of allSkills) {
-        const skillLower = skill.toLowerCase();
+        const skillLower = normalizeForSkillMatch(skill);
+        const skillPattern = escapeRegex(skillLower).replace(/\s+/g, '\\s+');
         // Tam kelime eşleşmesi (skill'in etrafında kelime sınırı olmalı)
-        const regex = new RegExp(`(?:^|[\\s,;:()\\[\\]{}/\\"'\\-\u2013\u2014\u2022\u25cf|])${escapeRegex(skillLower)}(?:$|[\\s,;:()\\[\\]{}/\\"'\\-\u2013\u2014\u2022\u25cf|.])`, 'i');
+        const regex = new RegExp(`(?:^|[\\s,;:()\\[\\]{}/\\"'\\-\u2013\u2014\u2022\u25cf|])${skillPattern}(?:$|[\\s,;:()\\[\\]{}/\\"'\\-\u2013\u2014\u2022\u25cf|.])`, 'i');
         if (regex.test(normalizedText)) {
             // Canonical formunu bul
             const syn = findSynonym(skillLower);
@@ -209,6 +210,13 @@ export function extractSkillsFromCV(text) {
  */
 function escapeRegex(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function normalizeForSkillMatch(text) {
+    return turkishLowerCase(text || '')
+        .replace(/ı/g, 'i')
+        .replace(/[^\S\n]+/g, ' ')
+        .trim();
 }
 
 /**

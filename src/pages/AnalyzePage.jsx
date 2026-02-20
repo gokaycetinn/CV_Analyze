@@ -82,9 +82,6 @@ export default function AnalyzePage() {
                 {/* ── Header ────────────────────────────── */}
                 <AnimatedContent distance={30} duration={0.4}>
                     <div className="analyze-header">
-                        <div className="analyze-header-badge">
-                            <span>Yapay Zeka Destekli Analiz</span>
-                        </div>
                         <h1 className="analyze-title">
                             CV <span className="gradient-text">Analizi</span>
                         </h1>

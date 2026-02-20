@@ -31,15 +31,11 @@
     text-decoration: none;
 }
 
-.brand-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-sm);
-    background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
+.brand-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    display: block;
 }
 
 .brand-name {

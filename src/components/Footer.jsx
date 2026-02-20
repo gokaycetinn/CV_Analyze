@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Zap } from 'lucide-react';
+import logo from '../../img/logo.png';
 import './Footer.css';
 
 export default function Footer() {
@@ -7,7 +7,7 @@ export default function Footer() {
         <footer className="footer">
             <div className="footer-inner">
                 <div className="footer-brand">
-                    <Zap size={16} className="footer-icon" />
+                    <img src={logo} alt="TR-ATS" className="footer-logo" />
                     <span className="footer-name">TR-ATS</span>
                 </div>
                 <div className="footer-links">

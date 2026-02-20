@@ -305,19 +305,33 @@
 }
 
 .panel-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: var(--radius-full);
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 8px;
+    padding: 0;
+    flex: 0 0 14px;
+    border-radius: 6px;
     border: none;
     background: var(--text-3);
     opacity: 0.35;
-    transition: all var(--ease-standard);
+    transform: scale(1);
+    transition: transform var(--ease-standard), opacity var(--ease-standard), background-color var(--ease-standard);
 }
 
 .panel-dot.active {
     opacity: 1;
-    width: 22px;
     background: var(--accent-1);
+    transform: scaleX(1.35) scaleY(1.05);
+}
+
+.panel-dot:focus {
+    outline: none;
+}
+
+.panel-dot:focus-visible {
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+    outline-offset: 2px;
 }
 
 @media (max-width: 900px) {

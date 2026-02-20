@@ -42,7 +42,7 @@ export function AnalysisProvider({ children }) {
             let jobAnalysis = null;
             let matchResults = null;
             let jobMatchScore = null;
-            let recommendations = null;
+            let recommendations = [];
 
             if (analysisMode === 'full') {
                 // 3. İlan analizi
@@ -54,11 +54,16 @@ export function AnalysisProvider({ children }) {
                 // 5. İlan eşleşme skoru
                 jobMatchScore = calculateJobMatchScore(matchResults);
 
-                // 6. Öneriler
-                recommendations = generateRecommendations(
-                    cvAnalysis, jobAnalysis, matchResults, atsScore, jobMatchScore
-                );
             }
+
+            // 6. Öneriler (both ats-only and full)
+            recommendations = generateRecommendations(
+                cvAnalysis,
+                jobAnalysis,
+                matchResults,
+                atsScore,
+                jobMatchScore
+            );
 
             setResults({
                 analysisMode,

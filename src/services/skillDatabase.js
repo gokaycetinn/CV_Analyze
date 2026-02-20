@@ -9,7 +9,7 @@ export const SKILL_CATEGORIES = {
     'next.js', 'nextjs', 'nuxt', 'nuxt.js', 'gatsby', 'svelte', 'jquery',
     'webpack', 'vite', 'babel', 'redux', 'mobx', 'zustand', 'recoil',
     'material ui', 'mui', 'ant design', 'chakra ui', 'styled-components',
-    'react native', 'rn', 'flutter', 'dart', 'ionic', 'expo',
+    'react native', 'react-native', 'reactnative', 'rn', 'flutter', 'dart', 'ionic', 'expo',
     'pwa', 'responsive design', 'duyarlı tasarım', 'web components'
   ],
   'Backend': [
@@ -54,7 +54,7 @@ export const SKILL_CATEGORIES = {
   ],
   'Mobile': [
     'ios', 'android', 'swift', 'objective-c', 'kotlin',
-    'react native', 'flutter', 'dart', 'xamarin',
+    'react native', 'react-native', 'reactnative', 'swiftui', 'swift ui', 'flutter', 'dart', 'xamarin',
     'mobile development', 'mobil geliştirme', 'mobil uygulama'
   ],
   'AI/ML': [
@@ -68,6 +68,22 @@ export const SKILL_CATEGORIES = {
     'pandas', 'numpy', 'matplotlib', 'seaborn',
     'data science', 'veri bilimi', 'data analysis', 'veri analizi',
     'big data', 'büyük veri', 'hadoop', 'spark', 'airflow'
+  ],
+  'Marketing': [
+    'marketing', 'pazarlama', 'digital marketing', 'dijital pazarlama',
+    'content marketing', 'içerik pazarlaması', 'icerik pazarlamasi',
+    'social media', 'sosyal medya', 'social media management', 'sosyal medya yönetimi',
+    'brand management', 'marka yönetimi',
+    'campaign management', 'kampanya yönetimi',
+    'email marketing', 'e-posta pazarlama', 'eposta pazarlama',
+    'performance marketing', 'performans pazarlaması',
+    'advertising analysis', 'reklam analizi',
+    'market research', 'pazar araştırması', 'pazar arastirmasi',
+    'seo', 'sem', 'google ads', 'meta ads',
+    'a/b test', 'ab test', 'conversion rate', 'dönüşüm oranı', 'donusum orani',
+    'customer engagement', 'müşteri etkileşimi', 'musteri etkilesimi',
+    'brand positioning', 'marka konumlandırma', 'marka konumlandirma',
+    'communication strategy', 'iletişim yönetimi', 'iletisim yonetimi'
   ],
   'Soft Skills': [
     'iletişim', 'communication', 'takım çalışması', 'teamwork',
@@ -86,7 +102,7 @@ export const SKILL_CATEGORIES = {
   ],
   'Other': [
     'figma', 'sketch', 'adobe xd', 'photoshop', 'illustrator',
-    'ui/ux', 'ui', 'ux', 'kullanıcı deneyimi', 'kullanıcı arayüzü',
+    'ui/ux', 'ui ux', 'ui-ux', 'ux/ui', 'ui', 'ux', 'kullanıcı deneyimi', 'kullanıcı arayüzü',
     'design patterns', 'tasarım desenleri', 'solid', 'oop',
     'functional programming', 'fonksiyonel programlama',
     'api', 'sdk', 'cli',
@@ -99,7 +115,8 @@ export const SKILL_CATEGORIES = {
 // Türkçe-İngilizce ve kısaltma eşanlamlıları
 export const SYNONYMS = {
   'react native': ['rn', 'react-native', 'reactnative'],
-  'react': ['react.js', 'reactjs'],
+  'swiftui': ['swift ui', 'swift-ui', 'swift uı'],
+  'react': ['react.js', 'reactjs', 'react-js', 'react native', 'react-native', 'reactnative'],
   'vue': ['vue.js', 'vuejs'],
   'angular': ['angularjs', 'angular.js'],
   'node.js': ['nodejs', 'node'],
@@ -120,6 +137,16 @@ export const SYNONYMS = {
   'natural language processing': ['doğal dil işleme', 'nlp', 'ddi'],
   'data science': ['veri bilimi'],
   'data analysis': ['veri analizi', 'veri analitiği'],
+  'digital marketing': ['dijital pazarlama'],
+  'content marketing': ['içerik pazarlaması', 'icerik pazarlamasi'],
+  'social media management': ['sosyal medya yönetimi', 'sosyal medya'],
+  'brand management': ['marka yönetimi'],
+  'email marketing': ['e-posta pazarlama', 'eposta pazarlama'],
+  'advertising analysis': ['reklam analizi'],
+  'market research': ['pazar araştırması', 'pazar arastirmasi'],
+  'campaign management': ['kampanya yönetimi'],
+  'conversion rate': ['dönüşüm oranı', 'donusum orani'],
+  'customer engagement': ['müşteri etkileşimi', 'musteri etkilesimi'],
   'big data': ['büyük veri'],
   'computer vision': ['bilgisayarlı görü', 'görüntü işleme'],
   'agile': ['çevik', 'çevik metodoloji'],
@@ -144,7 +171,8 @@ export const SYNONYMS = {
   'front end': ['frontend', 'front-end', 'ön yüz'],
   'back end': ['backend', 'back-end', 'arka yüz'],
   'devops': ['dev ops', 'dev-ops'],
-  'rest api': ['restful api', 'rest', 'restful'],
+  'rest api': ['restful api', 'restful apis', 'rest api\'s', 'rest', 'restful', 'rest apı'],
+  'ui/ux': ['ui ux', 'ui-ux', 'ux/ui', 'ux-ui', 'ui', 'ux', 'user interface', 'user experience', 'kullanıcı arayüzü', 'kullanıcı deneyimi'],
   'sql': ['structured query language'],
   'nosql': ['no-sql', 'non-sql'],
   'version control': ['versiyon kontrol', 'sürüm kontrol'],

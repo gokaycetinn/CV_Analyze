@@ -223,28 +223,42 @@ export function detectSeniority(text) {
 
 // Dil karışıklığı tespiti  
 export function detectLanguageMix(text) {
-    const sentences = splitSentences(text);
+    const tokens = tokenize(text);
+    if (tokens.length === 0) return { ratio: 0, dominant: 'unknown', mixed: false, trCount: 0, enCount: 0 };
+
+    const trMarkers = new Set([
+        've', 'ile', 'için', 'icin', 'olarak', 'gibi', 'bir', 'bu', 'şu', 'su', 'çok', 'cok',
+        'daha', 'göre', 'gore', 'deneyim', 'yönetimi', 'yonetimi', 'analizi', 'geliştirme', 'gelistirme',
+        'uzmanı', 'uzmani', 'seviyesi', 'ana', 'dil', 'özeti', 'ozeti'
+    ]);
+    const enMarkers = new Set([
+        'and', 'with', 'for', 'the', 'of', 'to', 'in', 'on', 'is', 'are',
+        'marketing', 'management', 'analysis', 'developer', 'engineer', 'specialist', 'experience'
+    ]);
+
     let trCount = 0;
     let enCount = 0;
 
-    const trIndicators = /[ğüşöçıİĞÜŞÖÇ]/;
-
-    for (const sentence of sentences) {
-        if (trIndicators.test(sentence)) {
+    for (const token of tokens) {
+        if (trMarkers.has(token) || /[ğüşöçı]/.test(token)) {
             trCount++;
-        } else {
+            continue;
+        }
+        if (enMarkers.has(token)) {
             enCount++;
         }
     }
 
     const total = trCount + enCount;
-    if (total === 0) return { ratio: 0, dominant: 'unknown', mixed: false };
+    if (total === 0) {
+        return { ratio: 0.5, dominant: 'tr', mixed: false, trCount: 0, enCount: 0 };
+    }
 
     const trRatio = trCount / total;
     return {
         ratio: trRatio,
         dominant: trRatio > 0.5 ? 'tr' : 'en',
-        mixed: trRatio > 0.2 && trRatio < 0.8,
+        mixed: trRatio > 0.25 && trRatio < 0.75,
         trCount,
         enCount
     };
