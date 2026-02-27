@@ -17,10 +17,19 @@ export default function Navbar() {
                 </NavLink>
 
                 <div className={`navbar-links ${mobileOpen ? 'open' : ''}`}>
-                    <NavLink to="/" className="nav-link" onClick={() => setMobileOpen(false)}>
+                    <NavLink
+                        to="/"
+                        end
+                        className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                        onClick={() => setMobileOpen(false)}
+                    >
                         Ana Sayfa
                     </NavLink>
-                    <NavLink to="/analyze" className="nav-link" onClick={() => setMobileOpen(false)}>
+                    <NavLink
+                        to="/analyze"
+                        className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                        onClick={() => setMobileOpen(false)}
+                    >
                         Analiz Et
                     </NavLink>
                 </div>
